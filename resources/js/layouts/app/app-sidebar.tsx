@@ -12,6 +12,7 @@ import {
     Archive,
     ChartLine,
     Package2,
+    ChevronDown,
 } from "lucide-react";
 
 import LogoGobti from "../../../../public/iconos/inventarios_icono_gobti.svg";
@@ -156,45 +157,44 @@ const AppSidebar = () => {
                             {nav.subItems ? (
                                 <button
                                     onClick={() => handleSubmenuToggle(nav.name)}
-                                    className={`group flex items-center justify-between w-full px-3 py-2 rounded-lg transition-colors duration-200
-    ${isMenuOpen ? "bg-[#115641] text-white" : "hover:bg-[#115641] hover:text-white"}
-`}
-                                >
-                                    <div className="flex items-center gap-x-3 overflow-hidden">
-                                        <span className="shrink-0 p-1 rounded bg-white border shadow">
+                                    className={`menu-item group ${openSubmenu?.key === nav.name ? "menu-item-active" : "menu-item-inactive"
+                                        } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}>
+
+
+                                        <span className={`menu-item-icon-size border bg-white p-[5px] rounded shadow ${
+                                            openSubmenu?.key === nav.name
+                                                ? "menu-item-icon-active"
+                                                : "menu-item-icon-inactive"
+                                        }`}>
                                             {nav.icon}
                                         </span>
-                                        {(isExpanded || isHovered || isMobileOpen) && (
-                                            <span className="truncate">{nav.name}</span>
-                                        )}
-                                    </div>
-
-                                    {/* Flecha de despliegue */}
-                                    {(isExpanded || isHovered || isMobileOpen) && (
-                                        <svg
-                                            className={`h-4 w-4 transition-transform duration-300 ${isMenuOpen ? "rotate-180" : ""
+                                         {(isExpanded || isHovered || isMobileOpen) && (
+                                        <>
+                                            <span className="menu-item-text">{nav.name}</span>
+                                            <ChevronDown
+                                                className={`ml-auto w-5 h-5 transition-transform duration-200 ${
+                                                    openSubmenu?.key === nav.name ? "rotate-180" : ""
                                                 }`}
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                        >
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                        </svg>
+                                            />
+                                        </>
                                     )}
                                 </button>
 
                             ) : (
                                 <Link
                                     href={nav.path!}
-                                    className={`group flex items-center gap-x-3 w-full whitespace-nowrap overflow-hidden px-3 py-2 rounded-lg transition-all duration-200 text-sm font-medium
-    ${isActive(nav.path!) ? "bg-[#115641] text-white" : "hover:bg-[#115641] hover:text-white"}
-`}
+                                     className={`menu-item group ${isActive(nav.path!) ? "menu-item-active" : "menu-item-inactive"
+                                    }`}
                                 >
-                                    <span className="shrink-0 p-1 rounded bg-gray border shadow">
+                                    <span className={`menu-item-icon-size bg-white border p-[5px] rounded shadow
+                                            ${isActive(nav.path!)
+                                                ? "menu-item-icon-active"
+                                                : "menu-item-icon-inactive"
+                                        }`}>
                                         {nav.icon}
                                     </span>
                                     {(isExpanded || isHovered || isMobileOpen) && (
-                                        <span className="truncate">{nav.name}</span>
+                                        <span className="menu-item-text">{nav.name}</span>
                                     )}
                                 </Link>
                             )}
@@ -209,10 +209,11 @@ const AppSidebar = () => {
                                             <li key={subItem.name}>
                                                 <Link
                                                     href={subItem.path}
-                                                    className={`relative flex items-center rounded-lg px-3 py-1 text-theme-sm font-medium; ${isActive(subItem.path)
-                                                        ? "bg-[#60c5a3] text-black"
-                                                        : "text-black"
-                                                        }`}
+                                                   className={`menu-dropdown-item ${
+                                                        isActive(subItem.path)
+                                                            ? "menu-dropdown-item-active"
+                                                            : "menu-dropdown-item-inactive"
+                                                    }`}
                                                 >
                                                     {subItem.name}
                                                 </Link>

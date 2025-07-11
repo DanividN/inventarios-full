@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\configuracion\areas;
+use App\Models\Estados;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,5 +22,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => bcrypt('123456'),
         ]);
+
+        $this->call(EstadosMunicipiosSeeder::class);
+        $this->call(AreaPrincipalSeeder::class);
     }
 }

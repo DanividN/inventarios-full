@@ -1,18 +1,28 @@
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import React from "react";
-import { SidebarProvider, useSidebar } from "@/context/sidebar-context";
-import AppSidebar from "./app/app-sidebar";
-import Backdrop from "@/components/backdrop";
-import AppHeader from "@/components/app-header";
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import React, { useEffect } from "react"
+import { usePage } from "@inertiajs/react"
+import { SidebarProvider, useSidebar } from "@/context/sidebar-context"
+import AppSidebar from "./app/app-sidebar"
+import Backdrop from "@/components/backdrop"
+import AppHeader from "@/components/app-header"
 
-// Definimos tipo para props.children
 type LayoutProps = {
-  children: React.ReactNode;
-};
+  children: React.ReactNode
+}
 
 const LayoutContent: React.FC<LayoutProps> = ({ children }) => {
-  const { isExpanded, isHovered, isMobileOpen } = useSidebar();
+  const { isExpanded, isHovered, isMobileOpen } = useSidebar()
+
+    const { successMessage, errorMessage } = usePage().props as {
+        successMessage?: string
+        errorMessage?: string
+    }
+
+     useEffect(() => {
+    if (successMessage) toast.success(successMessage)
+    if (errorMessage) toast.error(errorMessage)
+  }, [successMessage, errorMessage])
 
   return (
     <div className="min-h-screen xl:flex">
@@ -37,16 +47,15 @@ const LayoutContent: React.FC<LayoutProps> = ({ children }) => {
         toastClassName="toast"
       />
     </div>
-  );
-};
+  )
+}
 
 const AppLayout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <SidebarProvider>
       <LayoutContent>{children}</LayoutContent>
     </SidebarProvider>
-  );
-};
+  )
+}
 
-export default AppLayout;
-
+export default AppLayout
