@@ -33,7 +33,7 @@ export default function AreasIndex() {
             },
             {
                 accessorKey: "nomeclatura",
-                label: "Nomeclatura",
+                label: "Nomenclatura",
                 cell: (info: any) => info.getValue(),
                 filterFn: "includesStringSensitive",
             },
