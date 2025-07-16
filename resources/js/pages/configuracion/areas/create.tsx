@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler, FieldErrors } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { router } from '@inertiajs/react'
 import CardComponent from '@/components/ui/CardComponent'
 import CancelButton from '@/components/ui/CancelButton'
@@ -35,6 +35,7 @@ type Props = PageProps & {
   areas: Area[]
   estados: Estado[]
 }
+
 const AreasCreate = ({ areas, estados }: Props) => {
     const defaultValues: AreaFormValues = {
         id_area: '',

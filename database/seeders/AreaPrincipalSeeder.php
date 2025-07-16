@@ -18,7 +18,7 @@ class AreaPrincipalSeeder extends Seeder
         areas::create([
             'name' => 'Dirección General',
             'nomenclatura' => 'DG',
-            'telefono' => 123456789,
+            'telefono' => 1234567890,
             'calle' => 'Calle Principal',
             'numero_exterior' => '123',
             'numero_interior' => null,

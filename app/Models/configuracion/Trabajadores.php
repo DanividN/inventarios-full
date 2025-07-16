@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Models\configuracion;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Trabajadores extends Model
+{
+    protected $table = 'trabajadores';
+
+    protected $fillable = [
+        'area_id',
+        'nombre',
+        'apellido_paterno',
+        'apellido_materno',
+        'cargo',
+        'numero_empleado',
+        'telefono',
+        'fecha_ingreso',
+        'folio_ine',
+        'foto_ine',
+    ];
+
+    public function area()
+    {
+        return $this->belongsTo(Areas::class, 'area_id');
+    }
+}
