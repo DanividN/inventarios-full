@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\configuracion\AreasController;
+use App\Http\Controllers\configuracion\ProveedoresController;
 use App\Http\Controllers\configuracion\TrabajadoresController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +19,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('trabajadores', [TrabajadoresController::class, 'store'])->name('trabajadores.store');
         Route::get('trabajadores/edit/{trabajador}', [TrabajadoresController::class, 'edit'])->name('trabajadores.edit');
         Route::post('trabajadores/{trabajador}', [TrabajadoresController::class, 'update'])->name('trabajadores.update');
-
         Route::get('trabajadores/ine_fotos/{filename}', [TrabajadoresController::class, 'verFotoIne'])->name('trabajadores.ver-foto-ine');
+
+        Route::get('proveedores', [ProveedoresController::class, 'index'])->name('proveedores.index');
+        Route::get('proveedores/crear', [ProveedoresController::class, 'create'])->name('proveedores.create');
+        Route::post('proveedores', [ProveedoresController::class, 'store'])->name('proveedores.store');
+        Route::get('proveedores/edit/{proveedor}', [ProveedoresController::class, 'edit'])->name('proveedores.edit');
+        Route::put('proveedores/{proveedor}', [ProveedoresController::class, 'update'])->name('proveedores.update');
+        Route::put('proveedores/{proveedor}/toggle-estatus', [ProveedoresController::class, 'toggleEstatus'])->name('proveedores.toggle-estatus');
+
     });
 });
