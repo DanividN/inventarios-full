@@ -3,6 +3,7 @@ import SelectField from "../ui/SelectField";
 import InputField from "../ui/InputField";
 import { Control, FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { ProveedoresFormValues } from "@/types/ProveedoresFormValues";
+import { Estados } from "@/types/Estados";
 
 type ProveedoresFormProps = {
     control: Control<ProveedoresFormValues>
@@ -10,7 +11,7 @@ type ProveedoresFormProps = {
     errors: FieldErrors<ProveedoresFormValues>
     defaultValues: ProveedoresFormValues
     isEditing: boolean
-    estados: Estado[]
+    estados: Estados[]
     setValue: UseFormSetValue<ProveedoresFormValues>
     watch: UseFormSetValue<ProveedoresFormValues>
 }

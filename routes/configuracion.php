@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\configuracion\AreasController;
+use App\Http\Controllers\configuracion\ArticulosController;
 use App\Http\Controllers\configuracion\ClasificacionController;
 use App\Http\Controllers\configuracion\ProveedoresController;
 use App\Http\Controllers\configuracion\TrabajadoresController;
@@ -35,5 +36,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('clasificacion', [ClasificacionController::class, 'store'])->name('clasificacion.store');
         Route::get('clasificacion/edit/{clasificacion}', [ClasificacionController::class, 'edit'])->name('clasificacion.edit');
         Route::put('clasificacion/{clasificacion}', [ClasificacionController::class, 'update'])->name('clasificacion.update');
+
+        Route::get('articulos', [ArticulosController::class, 'index'])->name('articulos.index');
+        Route::get('articulos/crear', [ArticulosController::class, 'create'])->name('articulos.create');
+        Route::post('articulos', [ArticulosController::class, 'store'])->name('articulos.store');
+        Route::get('articulos/edit/{articulo}', [ArticulosController::class, 'edit'])->name('articulos.edit');
+        Route::put('articulos/{articulo}', [ArticulosController::class, 'update'])->name('articulos.update');
     });
 });

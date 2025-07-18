@@ -5,6 +5,7 @@ import SaveButton from "@/components/ui/SaveButton";
 import AppLayout from "@/layouts/app-layout";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { router } from "@inertiajs/react";
+import { toast } from "react-toastify";
 
 type TrabajadoreFormValues = {
     area_id: string,
@@ -51,7 +52,7 @@ export default function TrabajadoresCreate({ areas }: Props) {
     const onSubmit: SubmitHandler<TrabajadoreFormValues> = (data) => {
         router.post('/configuracion/trabajadores', data, {
             onSuccess: () => {
-                console.log('trabajador creado')
+                toast.success("Trabajador creado correctamente.");
             },
             onError: (serverErrors) => {
                 Object.entries(serverErrors).forEach(([key, message]) => {

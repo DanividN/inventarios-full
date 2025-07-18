@@ -7,6 +7,7 @@ import SaveButton from "../ui/SaveButton";
 import CancelButton from "../ui/CancelButton";
 import EditButton from "../ui/EditButton";
 import { router } from "@inertiajs/react";
+import { toast } from "react-toastify";
 
 export default function AreasEditForm({ data, areas, estados } : any) {
     const [isEditing, setIsEditing] = useState(false);
@@ -50,7 +51,7 @@ export default function AreasEditForm({ data, areas, estados } : any) {
     const onSubmit: SubmitHandler<AreaFormValues> = (data) => {
         router.put(`/configuracion/areas/${data.id}`, data, {
             onSuccess: () => {
-                // router.visit('/configuracion/areas')
+                toast.success("Área actualizada correctamente.");
             },
             onError: (serverErrors) => {
                 Object.entries(serverErrors).forEach(([key, message]) => {

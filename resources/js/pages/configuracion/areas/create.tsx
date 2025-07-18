@@ -5,6 +5,7 @@ import CancelButton from '@/components/ui/CancelButton'
 import SaveButton from '@/components/ui/SaveButton'
 import AreasForm from '@/components/areas/AreaForm'
 import AppLayout from '@/layouts/app-layout'
+import { toast } from 'react-toastify'
 
 
 type AreaFormValues = {
@@ -61,7 +62,7 @@ const AreasCreate = ({ areas, estados }: Props) => {
     const onSubmit: SubmitHandler<AreaFormValues> = (data) => {
     router.post('/configuracion/areas', data, {
         onSuccess: () => {
-            router.visit('/configuracion/areas')
+            toast.success("Área creada correctamente.");
         },
         onError: (serverErrors) => {
             Object.entries(serverErrors).forEach(([key, message]) => {

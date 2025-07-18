@@ -8,6 +8,7 @@ import CancelButton from "../ui/CancelButton";
 import SaveButton from "../ui/SaveButton";
 import EditButton from "../ui/EditButton";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function TrabajadoresEditForm({ data, areas }: any) {
     const [isEditing, setIsEditing] = useState(false);
@@ -42,7 +43,7 @@ export default function TrabajadoresEditForm({ data, areas }: any) {
     const onSubmit: SubmitHandler<TrabajadoresFormValues> = (data) => {
         router.post(`/configuracion/trabajadores/${data.id}`, data, {
             onSuccess: () => {
-                console.log("edicion realizada correctamente");
+                toast.success("Trabajador actualizado correctamente.");
             },
             onError: (serverErrors) => {
                 Object.entries(serverErrors).forEach(([key, message]) => {

@@ -7,6 +7,7 @@ import { Estados } from "@/types/Estados";
 import { ProveedoresFormValues } from "@/types/ProveedoresFormValues";
 import { router } from "@inertiajs/react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 
 type Props = PageProps & {
@@ -47,7 +48,7 @@ export default function ProveedoresCreate({ estados }: Props) {
     const onSubmit: SubmitHandler<ProveedoresFormValues> = (data) => {
         router.post('/configuracion/proveedores', data, {
             onSuccess: () => {
-                console.log('proveedor creado')
+                toast.success("Proveedor creado correctamente.");
             },
             onError: (serverErrors) => {
                 Object.entries(serverErrors).forEach(([key, message]) => {
