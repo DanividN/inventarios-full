@@ -16,9 +16,7 @@ export default function ProveedoresEdit({ estados }: Props) {
     }
     return (
         <>
-            <AppLayout>
-                <ProveedoresEditForm data={data} estados={estados}/>
-            </AppLayout>
+            <ProveedoresEditForm data={data} estados={estados}/>
         </>
     )
 }

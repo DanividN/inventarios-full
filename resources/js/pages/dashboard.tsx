@@ -175,7 +175,7 @@ function DonutChart({ data, total }: { data: ChartData[]; total: number }) {
 
 export default function Dashboard() {
     return (
-        <AppLayout>
+
             <div className="w-full mx-auto min-h-screen">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <Card title="INFORME DE RESGUARDOS POR ÁREA" subtitle="INVENTARIO ASIGNADO PENDIENTE DE RESGUARDO DETALLADO">
@@ -205,7 +205,7 @@ export default function Dashboard() {
                     </Card>
                 </div>
             </div>
-        </AppLayout>
+
     )
 }
 

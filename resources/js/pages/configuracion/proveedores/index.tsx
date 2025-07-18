@@ -2,6 +2,7 @@ import ActionMenu from "@/components/ui/ActionMenu";
 import TableComponent from "@/components/ui/TableComponent";
 import AppLayout from "@/layouts/app-layout";
 import { router, usePage } from "@inertiajs/react";
+import { PlusIcon } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
@@ -88,8 +89,8 @@ export default function Proveedores() {
                         <button
                             onClick={toggleStatus}
                             className={`px-2 py-1 rounded text-sm ${status === "Activo"
-                                    ? "text-green-600 bg-green-100 hover:bg-green-200"
-                                    : "text-gray-600 bg-gray-100 hover:bg-gray-200"
+                                ? "text-green-600 bg-green-100 hover:bg-green-200"
+                                : "text-gray-600 bg-gray-100 hover:bg-gray-200"
                                 }`}
                         >
                             {status}
@@ -126,16 +127,14 @@ export default function Proveedores() {
 
     return (
         <>
-            <AppLayout>
-                <TableComponent
-                    columns={columns}
-                    data={data}
-                    showButtonCreate={true}
-                    iconButtonCreate="+"
-                    titleButtonCreate="Agregar proveedor"
-                    toButtonCreate="/configuracion/proveedores/crear"
-                />
-            </AppLayout>
+            <TableComponent
+                columns={columns}
+                data={data}
+                showButtonCreate={true}
+                iconButtonCreate={<PlusIcon />}
+                titleButtonCreate="Agregar proveedor"
+                toButtonCreate="/configuracion/proveedores/crear"
+            />
         </>
     )
 }

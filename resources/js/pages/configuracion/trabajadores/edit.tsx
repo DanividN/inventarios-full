@@ -21,9 +21,7 @@ export default function TrabajadoresEdit({ areas }: Props) {
 
     return (
         <>
-            <AppLayout>
-                <TrabajadoresEditForm data={data} areas={areas} />
-            </AppLayout>
+            <TrabajadoresEditForm data={data} areas={areas} />
         </>
     )
 }

@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\configuracion\AreasController;
+use App\Http\Controllers\configuracion\ClasificacionController;
 use App\Http\Controllers\configuracion\ProveedoresController;
 use App\Http\Controllers\configuracion\TrabajadoresController;
+use App\Models\configuracion\Clasificacion;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -28,5 +30,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('proveedores/{proveedor}', [ProveedoresController::class, 'update'])->name('proveedores.update');
         Route::put('proveedores/{proveedor}/toggle-estatus', [ProveedoresController::class, 'toggleEstatus'])->name('proveedores.toggle-estatus');
 
+        Route::get('clasificacion', [ClasificacionController::class, 'index'])->name('clasificacion.index');
+        Route::get('clasificacion/crear', [ClasificacionController::class, 'create'])->name('clasificacion.create');
+        Route::post('clasificacion', [ClasificacionController::class, 'store'])->name('clasificacion.store');
+        Route::get('clasificacion/edit/{clasificacion}', [ClasificacionController::class, 'edit'])->name('clasificacion.edit');
+        Route::put('clasificacion/{clasificacion}', [ClasificacionController::class, 'update'])->name('clasificacion.update');
     });
 });

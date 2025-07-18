@@ -4,6 +4,7 @@ import { useEffect, useMemo } from "react";
 import { usePage } from "@inertiajs/react";
 import ActionMenu from "@/components/ui/ActionMenu";
 import { toast } from "react-toastify";
+import { PlusIcon } from "lucide-react";
 
 export default function AreasIndex() {
     const { areas, successMessage, errorMessage } = usePage<{
@@ -74,15 +75,15 @@ export default function AreasIndex() {
     }));
 
     return (
-        <AppLayout>
+
             <TableComponent
                 columns={columns}
                 data={data}
                 showButtonCreate={true}
-                iconButtonCreate="+"
+                iconButtonCreate={<PlusIcon />}
                 titleButtonCreate="Agregar área"
                 toButtonCreate="/configuracion/areas/crear"
             />
-        </AppLayout>
+
     );
 }

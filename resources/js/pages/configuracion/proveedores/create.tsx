@@ -67,7 +67,7 @@ export default function ProveedoresCreate({ estados }: Props) {
 
     return (
         <>
-         <AppLayout>
+
             <CardComponent title="Agregar proveedores">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <ProveedoresForm
@@ -86,7 +86,7 @@ export default function ProveedoresCreate({ estados }: Props) {
                     </div>
                 </form>
             </CardComponent>
-         </AppLayout>
+
         </>
     )
 }

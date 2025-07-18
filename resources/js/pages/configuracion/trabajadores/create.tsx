@@ -24,7 +24,7 @@ type Area = {
 }
 
 type Props = PageProps & {
-  areas: Area[]
+    areas: Area[]
 }
 export default function TrabajadoresCreate({ areas }: Props) {
     const defaultValues: TrabajadoreFormValues = {
@@ -66,25 +66,23 @@ export default function TrabajadoresCreate({ areas }: Props) {
 
     return (
         <>
-            <AppLayout >
-                <CardComponent title="Agregar trabajador">
-                    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-                        <TrabajadoresForm
-                            control={control}
-                            register={register}
-                            errors={errors}
-                            defaultValues={defaultValues}
-                            isEditing={false}
-                            areas={areas}
-                            setValue={setValue}
-                        />
-                        <div className="flex justify-center md:justify-end mt-6">
-                            <CancelButton link="/configuracion/trabajadores" />
-                            <SaveButton />
-                        </div>
-                    </form>
-                </CardComponent>
-            </AppLayout>
+            <CardComponent title="Agregar trabajador">
+                <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+                    <TrabajadoresForm
+                        control={control}
+                        register={register}
+                        errors={errors}
+                        defaultValues={defaultValues}
+                        isEditing={false}
+                        areas={areas}
+                        setValue={setValue}
+                    />
+                    <div className="flex justify-center md:justify-end mt-6">
+                        <CancelButton link="/configuracion/trabajadores" />
+                        <SaveButton />
+                    </div>
+                </form>
+            </CardComponent>
         </>
     )
 }

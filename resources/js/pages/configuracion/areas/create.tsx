@@ -75,7 +75,7 @@ const AreasCreate = ({ areas, estados }: Props) => {
 }
 
     return (
-        <AppLayout>
+
             <CardComponent title="Agregar nueva área">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <AreasForm
@@ -94,7 +94,7 @@ const AreasCreate = ({ areas, estados }: Props) => {
                     </div>
                 </form>
             </CardComponent>
-        </AppLayout>
+
     )
 }
 

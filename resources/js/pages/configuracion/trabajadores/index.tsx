@@ -2,6 +2,7 @@ import ActionMenu from "@/components/ui/ActionMenu";
 import TableComponent from "@/components/ui/TableComponent";
 import AppLayout from "@/layouts/app-layout";
 import { usePage } from "@inertiajs/react";
+import { PlusIcon } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { toast } from "react-toastify";
 
@@ -74,16 +75,13 @@ export default function TrabajadoresIndex() {
     }))
 
     return (
-        <AppLayout>
             <TableComponent
                 columns={columns}
                 data={data}
                 showButtonCreate={true}
-                iconButtonCreate="+"
+                iconButtonCreate={<PlusIcon />}
                 titleButtonCreate="Agregar Trabajador"
                 toButtonCreate="/configuracion/trabajadores/crear"
             />
-        </AppLayout>
-
     )
 }

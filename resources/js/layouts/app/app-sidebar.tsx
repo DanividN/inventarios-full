@@ -36,7 +36,7 @@ const navItems: NavItem[] = [
             { name: "Trabajadores", path: "/configuracion/trabajadores" },
             { name: "Usuarios", path: "/configuracion/usuarios" },
             { name: "Proveedores", path: "/configuracion/proveedores" },
-            { name: "Clasificación de Bienes", path: "/configuracion/clasificacion-bien" },
+            { name: "Clasificación de Bienes", path: "/configuracion/clasificacion" },
             { name: "Artículos", path: "/configuracion/articulos" },
         ],
     },
