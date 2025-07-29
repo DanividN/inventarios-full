@@ -29,7 +29,7 @@ export default function AreasEdit({ areas, estados }: Props) {
 
     return (
         <>
-            <AreasEditForm data={data}  areas={areas} estados={estados}/>
+            <AreasEditForm data={data} areas={areas} estados={estados}/>
         </>
     )
 }

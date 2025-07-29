@@ -76,26 +76,24 @@ const AreasCreate = ({ areas, estados }: Props) => {
 }
 
     return (
+        <CardComponent title="Agregar nueva área">
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <AreasForm
+                    control={control}
+                    register={register}
+                    errors={errors}
+                    defaultValues={defaultValues}
+                    isEditing={false}
+                    areas={areas}
+                    estados={estados}
+                />
 
-            <CardComponent title="Agregar nueva área">
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <AreasForm
-                        control={control}
-                        register={register}
-                        errors={errors}
-                        defaultValues={defaultValues}
-                        isEditing={false}
-                        areas={areas}
-                        estados={estados}
-                    />
-
-                    <div className="flex justify-center md:justify-end mt-6">
-                        <CancelButton link="/configuracion/areas" />
-                        <SaveButton />
-                    </div>
-                </form>
-            </CardComponent>
-
+                <div className="flex justify-center md:justify-end mt-6">
+                    <CancelButton link="/configuracion/areas" />
+                    <SaveButton />
+                </div>
+            </form>
+        </CardComponent>
     )
 }
 

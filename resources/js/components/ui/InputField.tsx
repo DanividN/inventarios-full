@@ -1,6 +1,9 @@
-import React from "react"
-import { UseFormRegister, FieldErrors, RegisterOptions } from "react-hook-form"
-import { AreaFormValues } from "@/types/AreaFormValues"
+"use client"
+
+import type React from "react"
+import { useState } from "react"
+import type { UseFormRegister, FieldErrors, RegisterOptions } from "react-hook-form"
+import type { AreaFormValues } from "@/types/AreaFormValues"
 
 type InputFieldProps = {
   id: keyof AreaFormValues
@@ -13,6 +16,10 @@ type InputFieldProps = {
   rules?: RegisterOptions
   disabled?: boolean
   maxLength?: number
+  // Nuevas props para formato de dinero
+  currency?: boolean
+  currencyCode?: string
+  locale?: string
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -26,14 +33,67 @@ const InputField: React.FC<InputFieldProps> = ({
   rules,
   disabled = false,
   maxLength,
+  currency = false,
+  currencyCode = "USD",
+  locale = "en-US",
 }) => {
+  const [isFocused, setIsFocused] = useState(false)
+
+  const formatCurrency = (value: string) => {
+    if (!value) return ""
+
+    const numericValue = Number.parseFloat(value.replace(/[^0-9.-]/g, ""))
+
+    if (isNaN(numericValue)) return ""
+
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: currencyCode,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(numericValue)
+  }
+
+  const registerProps = register(id, rules)
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (currency) {
+      setIsFocused(true)
+      // Limpiar formato para mostrar solo números
+      const rawValue = e.target.value.replace(/[^0-9.-]/g, "")
+      e.target.value = rawValue
+    }
+    registerProps.onFocus?.(e)
+  }
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (currency) {
+      setIsFocused(false)
+      // Aplicar formato de moneda
+      const rawValue = e.target.value.replace(/[^0-9.-]/g, "")
+      if (rawValue) {
+        e.target.value = formatCurrency(rawValue)
+      }
+    }
+    registerProps.onBlur(e)
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (currency && isFocused) {
+      // Solo permitir números, puntos y guiones mientras se escribe
+      const value = e.target.value.replace(/[^0-9.-]/g, "")
+      e.target.value = value
+    }
+    registerProps.onChange(e)
+  }
+
   return (
     <div className={`relative ${additionalClasses}`}>
       <input
         id={id}
-        type={type}
+        type={currency ? "text" : type}
         maxLength={maxLength}
-        {...register(id, rules)}
+        {...registerProps}
         className={`peer py-4 px-0 block w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-200 sm:text-sm placeholder:text-transparent focus:border-t-transparent focus:border-x-transparent focus:border-b-blue-light-600 focus:ring-0 disabled:opacity-50 disabled:pointer-events-none
         focus:pt-6
         focus:pb-2
@@ -43,6 +103,9 @@ const InputField: React.FC<InputFieldProps> = ({
         autofill:pb-2`}
         placeholder={placeholder}
         disabled={disabled}
+        onChange={handleChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
       />
       <label
         htmlFor={id}
@@ -59,11 +122,7 @@ const InputField: React.FC<InputFieldProps> = ({
       >
         {label}
       </label>
-      {errors[id] && (
-        <p className="text-red-500 text-xs mt-1">
-          {errors[id]?.message as string}
-        </p>
-      )}
+      {errors[id] && <p className="text-red-500 text-xs mt-1">{errors[id]?.message as string}</p>}
     </div>
   )
 }

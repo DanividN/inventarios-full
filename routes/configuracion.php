@@ -5,7 +5,6 @@ use App\Http\Controllers\configuracion\ArticulosController;
 use App\Http\Controllers\configuracion\ClasificacionController;
 use App\Http\Controllers\configuracion\ProveedoresController;
 use App\Http\Controllers\configuracion\TrabajadoresController;
-use App\Models\configuracion\Clasificacion;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -15,7 +14,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('areas', [AreasController::class, 'store'])->name('areas.store');
         Route::get('areas/edit/{area}', [AreasController::class, 'edit'])->name('areas.edit');
         Route::put('areas/{area}', [AreasController::class, 'update'])->name('areas.update');
-
 
         Route::get('trabajadores', [TrabajadoresController::class, 'index'])->name('trabajadores.index');
         Route::get('trabajadores/crear', [TrabajadoresController::class, 'create'])->name('trabajadores.create');
