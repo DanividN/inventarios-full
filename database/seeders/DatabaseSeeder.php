@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TrabajadoresSeeder::class);
         $this->call(ProveedoresSeeder::class);
         $this->call(ClasificacionSeeder::class);
+        $this->call(ArticulosSeeder::class);
 
     }
 }

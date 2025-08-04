@@ -3,7 +3,6 @@ import { Clasificaciones } from "@/types/Clasificaciones"
 import { Control, FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form"
 import InputField from "../ui/InputField"
 import SelectField from "../ui/SelectField"
-import { Select } from "@headlessui/react"
 
 type ArticulosFormProps = {
     control: Control<ArticulosFormValues>

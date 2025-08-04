@@ -49,15 +49,7 @@ class ArticulosController extends Controller
             'descripcion' => 'required',
         ]);
 
-        Articulos::create([
-            'clasificacion_id' => $request->clasificacion_id,
-            'articulo' => $request->articulo,
-            'unidad_medida' => $request->unidad,
-            'tipo' => $request->tipo,
-            'stock_minimo' => $request->stock_minimo,
-            'numero_parte' => $request->numero_parte,
-            'descripcion' => $request->descripcion
-        ]);
+        Articulos::create($request->all());
 
         return redirect()->route('articulos.index');
     }
@@ -90,15 +82,7 @@ class ArticulosController extends Controller
             'descripcion' => 'required',
         ]);
 
-        Articulos::find($id)->update([
-            'clasificacion_id' => $request->clasificacion_id,
-            'articulo' => $request->articulo,
-            'unidad_medida' => $request->unidad_medida,
-            'tipo' => $request->tipo,
-            'stock_minimo' => $request->stock_minimo,
-            'numero_parte' => $request->numero_parte,
-            'descripcion' => $request->descripcion
-        ]);
+        Articulos::find($id)->update($request->all());
 
         return redirect()->route('articulos.index');
     }

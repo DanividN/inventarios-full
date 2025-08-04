@@ -10,7 +10,7 @@ import {
 } from "@tanstack/react-table";
 import { rankItem } from "@tanstack/match-sorter-utils";
 import { parse } from "date-fns";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "@inertiajs/react";
 import Select from "react-select";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -26,7 +26,7 @@ interface TableComponentProps<T extends object> {
     showButtonSecondary?: boolean;
     openModal?: () => void;
     primaryButtonText?: boolean;
-    titleButtonSecondary?: string;
+    titleButtonSecondary?: React.ReactNode;
     showButtonEtiquetas?: boolean;
     titleButtonEtiquetas?: string;
     onClickButtonEtiquetas?: () => void;
@@ -122,7 +122,7 @@ function TableComponent<T extends object>({
                         <button
                             onClick={openModal}
                             className={`border rounded px-3 py-2 text-sm ${primaryButtonText
-                                ? "bg-green-600 text-white hover:bg-green-700"
+                                ? "bg-green-dark text-white hover:bg-green-700"
                                 : "text-gray-700 hover:bg-gray-100"
                                 }`}
                         >
