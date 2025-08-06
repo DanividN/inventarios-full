@@ -37,6 +37,7 @@ class BienesInventariablesController extends Controller
 
     public function store(Request $request)
     {
+
         $request->validate([
             'tipo' => 'required',
             'clasificacion_id' => 'required',
@@ -50,7 +51,7 @@ class BienesInventariablesController extends Controller
             'proveedor_id' => 'required',
             'costo_unitario' => 'required',
             'imagenes' => 'required|array',
-            'imagenes.*' => 'file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'imagenes.*' => 'file|mimes:jpg,jpeg,png,gif', // Validación de imágenes
         ]);
 
         $paths = [];
@@ -134,4 +135,10 @@ class BienesInventariablesController extends Controller
         return redirect()->route('inventariables.index');
     }
 
+
+    public function getArticulo($articulo)
+    {
+        $bienes = BienesInventariable::with('clasificacion')->where('clasificacion_id', $articulo)->where('tipo', 'almacen')->get();
+        return response()->json($bienes);
+    }
 }

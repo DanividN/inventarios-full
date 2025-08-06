@@ -13,4 +13,10 @@ class Clasificacion extends Model
         'clasificacion',
         'descripcion',
     ];
+
+     public function articulos()
+    {
+        return $this->hasMany(Articulos::class, 'clasificacion_id');
+    }
+
 }

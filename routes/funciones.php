@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\funciones\BienesConsumoController;
 use App\Http\Controllers\funciones\BienesInventariablesController;
+use App\Http\Controllers\funciones\EntregasInventariablesController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -22,6 +23,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('funciones/entregas')->group(function () {
         Route::get('inventariables', [EntregasInventariablesController::class, 'index'])->name('entregas.inventariables.index');
-
+        Route::get('inventariables/crear', [EntregasInventariablesController::class, 'create'])->name('entregas.inventariables.create');
+        Route::post('inventariables', [EntregasInventariablesController::class, 'store'])->name('entregas.inventariables.store');
+        Route::get('inventariables/historial', [EntregasInventariablesController::class, 'historial'])->name('entregas.inventariables.history');
     });
 });
