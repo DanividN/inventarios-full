@@ -44,10 +44,48 @@ class BienesConsumo extends Model
     }
     static function indexTable()
     {
-        return self::with(['articulo', 'clasificacion', 'proveedor'])
+        // Obtener la suma de ingresos agrupados
+        $ingresos = self::with(['articulo', 'clasificacion', 'proveedor'])
             ->selectRaw('clasificacion_id, articulo_id, unidad_medida, SUM(cantidad) as cantidad')
             ->groupBy('clasificacion_id', 'articulo_id', 'unidad_medida')
             ->get();
+
+        // Obtener la suma de consumos por articulo_id
+        $consumos = DetalleEntregasConsumo::selectRaw('articulo_id, SUM(cantidad) as cantidad')
+            ->groupBy('articulo_id')
+            ->pluck('cantidad', 'articulo_id'); // Pluck para acceso rápido por ID
+
+        // Restar consumos a ingresos
+        $resultado = $ingresos->map(function ($item) use ($consumos) {
+            $consumo = $consumos[$item->articulo_id] ?? 0;
+            $item->cantidad -= $consumo;
+            return $item;
+        });
+
+        return $resultado;
     }
 
+    static function getArticulos($clasificacion)
+    {
+        // Obtener ingresos agrupados por articulo dentro de la clasificación dada
+        $ingresos = self::with(['articulo', 'clasificacion', 'proveedor'])
+            ->selectRaw('clasificacion_id, articulo_id, unidad_medida, SUM(cantidad) as cantidad')
+            ->where('clasificacion_id', $clasificacion)
+            ->groupBy('clasificacion_id', 'articulo_id', 'unidad_medida')
+            ->get();
+
+        // Obtener consumos agrupados por articulo_id
+        $consumos = DetalleEntregasConsumo::selectRaw('articulo_id, SUM(cantidad) as cantidad')
+            ->groupBy('articulo_id')
+            ->pluck('cantidad', 'articulo_id'); // clave: articulo_id, valor: suma cantidad
+
+        // Restar consumos a los ingresos
+        $resultado = $ingresos->map(function ($item) use ($consumos) {
+            $consumo = $consumos[$item->articulo_id] ?? 0;
+            $item->cantidad -= $consumo;
+            return $item;
+        });
+
+        return $resultado;
+    }
 }

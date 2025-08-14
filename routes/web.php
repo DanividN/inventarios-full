@@ -18,6 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
    Route::get('getArticulos/{clasificacion}', [BienesConsumoController::class, 'getArticulos'])->name('consumo.getArticulos');
    Route::get('getUnidad/{articulo}', [BienesConsumoController::class, 'getUnidad'])->name('consumo.getUnidad');
    Route::get('articulos/{articulo}', [BienesInventariablesController::class, 'getArticulo'])->name('inventariable.getArticulo');
+   Route::get('articulosConsumible/{clasificacion}', [BienesConsumoController::class, 'getArticulosConsumible'])->name('consumo.getArticulosConsumible');
 
 });
 

@@ -75,4 +75,10 @@ class BienesConsumoController extends Controller
         $unidadMedida = Articulos::find($articulo);
         return response()->json($unidadMedida);
     }
+
+    public function getArticulosConsumible($clasificacion)
+    {
+        $articulos = BienesConsumo::getArticulos($clasificacion);
+        return response()->json($articulos);
+    }
 }

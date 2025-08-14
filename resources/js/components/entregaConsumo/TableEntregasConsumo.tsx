@@ -1,30 +1,28 @@
-import TextAreaField from "../ui/TextArea";
+import TextAreaField from "../ui/TextArea"
 
-const TableEntregas = ({ articles, register, handleRemoveArticle }) => {
+const TableEntregasConsumo = ({articles, register, handleRemoveArticle}) => {
   return (
     <>
-      <div className="border border-gray-300 rounded-lg overflow-x-auto mt-4">
-        <table className="min-w-full divide-y divide-gray-200 ">
+      <div className="border border-gray-300 rounded-lg overflow-hidden mt-4">
+        <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-100">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                No. de Inventario
+                No. de Artículo
               </th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                 Partida del gasto
               </th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                Nombre del bien
+                Cantidad
               </th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                Marca
+                Unidad de medida
               </th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                Modelo
+                Nombre del artículo
               </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                Costo unitario
-              </th>
+
               <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                 Acciones
               </th>
@@ -32,24 +30,21 @@ const TableEntregas = ({ articles, register, handleRemoveArticle }) => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {articles.map((article) => (
-              <tr key={article.id} className="hover:bg-gray-50 odd:bg-white even:bg-[#edfbf6]">
+              <tr key={article} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {article.inventoryNumber}
+                  {article.numeroInventario}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                  {article.expenseItem}
+                  {article.clasificacion}
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-700">
-                  {article.itemName}
+                  {article.cantidad_asignada}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                  {article.brand}
+                  {article.unidadMedida}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                  {article.model}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {article.unitCost}
+                  {article.articulo}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                   <button
@@ -81,14 +76,14 @@ const TableEntregas = ({ articles, register, handleRemoveArticle }) => {
 
       {/* Descripción */}
       <div className="space-y-2">
-        <TextAreaField
+         <TextAreaField
           id="description"
           label="Descripción"
           register={register}
         />
       </div>
     </>
-  );
-};
+  )
+}
 
-export default TableEntregas;
+export default TableEntregasConsumo

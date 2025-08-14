@@ -51,7 +51,6 @@ export default function EntregasInventariablesCreate({ areas, clasificaciones }:
         if (!selectedOption) return;
 
         const articulo = selectedOption.data;
-        console.log(articulo);
         setArticles(prev => [...prev, {
             id: articulo.id,
             inventoryNumber: articulo.numero_inventario,

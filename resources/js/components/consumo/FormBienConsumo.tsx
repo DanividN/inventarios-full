@@ -63,7 +63,6 @@ export default function FormBienConsumo({
         try {
             const response = await fetch(`/getUnidad/${selectedOption.value}`);
             const data = await response.json();
-            console.log(data);
 
             const unidadMedida = [{
                 value: data.unidad_medida,
