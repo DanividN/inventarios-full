@@ -141,4 +141,10 @@ class BienesInventariablesController extends Controller
         $bienes = BienesInventariable::with('clasificacion')->where('clasificacion_id', $articulo)->where('tipo', 'almacen')->get();
         return response()->json($bienes);
     }
+
+    public function getArticulosArea($area)
+    {
+        $bienes = BienesInventariable::where('area_id', $area)->where('tipo', 'asignado')->get();
+        return response()->json($bienes);
+    }
 }

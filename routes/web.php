@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\configuracion\TrabajadoresController;
 use App\Http\Controllers\funciones\BienesConsumoController;
 use App\Http\Controllers\funciones\BienesInventariablesController;
 use App\Http\Controllers\MunicipiosController;
@@ -19,6 +20,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
    Route::get('getUnidad/{articulo}', [BienesConsumoController::class, 'getUnidad'])->name('consumo.getUnidad');
    Route::get('articulos/{articulo}', [BienesInventariablesController::class, 'getArticulo'])->name('inventariable.getArticulo');
    Route::get('articulosConsumible/{clasificacion}', [BienesConsumoController::class, 'getArticulosConsumible'])->name('consumo.getArticulosConsumible');
+   Route::get('trabajadoresArea/{area}', [TrabajadoresController::class, 'getTrabajador'])->name('getTrabajador');
+   Route::get('articulosArea/{area}', [BienesInventariablesController::class, 'getArticulosArea'])->name('getArticulosArea');
 
 });
 

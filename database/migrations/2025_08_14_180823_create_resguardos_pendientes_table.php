@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('trabajador_id')->constrained('trabajadores')->cascadeOnDelete();
             $table->foreignId('articulo_id')->constrained('articulos')->cascadeOnDelete();
+            $table->string('creg');
             $table->enum('movimiento', ['sin movimiento', 'transferencia', 'reasignacion']);
             $table->text('formato_resguardo')->nullable();
             $table->text('resguardo_firma')->nullable();

@@ -122,7 +122,7 @@ function TableComponent<T extends object>({
                         <button
                             onClick={openModal}
                             className={`border rounded px-3 py-2 text-sm ${primaryButtonText
-                                ? "bg-green-dark text-white hover:bg-green-700"
+                                ? "bg-green-dark whitespace-nowrap w-full md:w-auto rounded-md text-white font-bold mt-4 md:mt-0 text-center flex items-center justify-between gap-3 pr-6"
                                 : "text-gray-700 hover:bg-gray-100"
                                 }`}
                         >

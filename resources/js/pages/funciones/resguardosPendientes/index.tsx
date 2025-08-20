@@ -1,10 +1,14 @@
+import FormCreg from "@/components/resguardosPendientes/FormCreg";
 import ActionMenu from "@/components/ui/ActionMenu";
 import CancelButton from "@/components/ui/CancelButton";
 import Modal from "@/components/ui/Modal";
 import SaveButton from "@/components/ui/SaveButton";
 import TableComponent from "@/components/ui/TableComponent";
-import { usePage } from "@inertiajs/react";
+import { ResguardosPendientesFormValues } from "@/types/ResguardosPendientesFormValues";
+import { router, usePage } from "@inertiajs/react";
 import { useMemo, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export default function ResguardosPendientes() {
     const [isModalEtiquetasOpen, setIsModalEtiquetasOpen] = useState(false);
@@ -12,7 +16,7 @@ export default function ResguardosPendientes() {
     const openModal = () => setIsModalEtiquetasOpen(true);
     const closeModal = () => setIsModalEtiquetasOpen(false);
 
-    const { pendientes } = usePage().props;
+    const { pendientes, areas } = usePage().props;
 
     const columns = useMemo(
         () => [
@@ -74,8 +78,10 @@ export default function ResguardosPendientes() {
                 ),
                 disableFilter: true,
             },
-        ],[]
+        ], []
     );
+
+    console.log(pendientes);
 
     const data = pendientes.map((pendiente) => ({
         noInventario: pendiente.noInventario,
@@ -87,6 +93,70 @@ export default function ResguardosPendientes() {
         formatoResguardo: pendiente.formatoResguardo,
         formatoFirmado: pendiente.formatoFirmado,
     }));
+
+    const defaultValues: ResguardosPendientesFormValues = {
+        trabajador_id: 0,
+        articulo_id: 0,
+        creg: '',
+    };
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        control,
+        setValue,
+        reset
+    } = useForm<ResguardosPendientesFormValues>({ defaultValues: defaultValues });
+
+    // traer trabajador por area
+    const [trabajadores, setTrabajadores] = useState<any[]>([]);
+    const [articulos, setArticulos] = useState<any[]>([]);
+
+    const handleAreaChange = async (selectedOption: any) => {
+        try {
+            const responseTrabajadores = await fetch(`/trabajadoresArea/${selectedOption.value}`);
+            const responseArticulos = await fetch(`/articulosArea/${selectedOption.value}`);
+
+            const dataTrabajadores = await responseTrabajadores.json();
+            const dataArticulos = await responseArticulos.json();
+
+            const trabajadoresOptions = dataTrabajadores.map((trabajador: any) => ({
+                value: trabajador.id,
+                label: trabajador.nombre + ' ' + trabajador.apellido_paterno + ' ' + trabajador.apellido_materno,
+            }));
+
+            const articulosOptions = dataArticulos.map((articulo: any) => ({
+                value: articulo.id,
+                label: articulo.numero_inventario + ' - ' + articulo.nombre,
+            }));
+
+            setTrabajadores(trabajadoresOptions);
+            setArticulos(articulosOptions);
+
+        } catch (error) {
+            console.error("Error fetching trabajadores:", error);
+
+        }
+    }
+
+    const onSubmit: SubmitHandler<ResguardosPendientesFormValues> = (data) => {
+        router.post('/funciones/resguardos/pendientes', data, {
+            onSuccess: () => {
+                toast.success("Resguardo pendiente creado correctamente.");
+                reset();
+                closeModal();
+            },
+            onError: (serverErrors) => {
+                Object.entries(serverErrors).forEach(([key, message]) => {
+                    setError(key as keyof ResguardosPendientesFormValues, {
+                        type: 'server',
+                        message: message as string
+                    })
+                })
+            }
+        })
+    }
 
     return (
         <>
@@ -102,14 +172,19 @@ export default function ResguardosPendientes() {
                 <Modal onClose={closeModal} title="Agregar CREG">
                     <div className="flex flex-col gap-4">
                         <div className="overflow-x-auto">
-                            <form action="">
-                                {/* <FormCreg
-                                register={register}
-                                errors={errors}
-                                defaultValues={defaultValues}
-                                isEditing={false}
-                                control={control}
-                            /> */}
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <FormCreg
+                                    register={register}
+                                    errors={errors}
+                                    defaultValues={defaultValues}
+                                    isEditing={false}
+                                    control={control}
+                                    setValue={setValue}
+                                    areas={areas}
+                                    handleAreaChange={handleAreaChange}
+                                    trabajadores={trabajadores}
+                                    articulos={articulos}
+                                />
                                 <div className='flex justify-center md:justify-end mt-6'>
                                     <CancelButton link='/funciones/inventarios/inventariables' />
                                     <SaveButton />

@@ -88,7 +88,7 @@ class TrabajadoresController extends Controller
      */
     public function update(Request $request, Trabajadores $trabajador)
     {
-    
+
         $request->validate([
             'area_id' => 'required',
             'nombre' => 'required',
@@ -130,5 +130,11 @@ class TrabajadoresController extends Controller
         }
 
         return response()->file(Storage::disk('private')->path($path));
+    }
+
+    public function getTrabajador($area)
+    {
+        $trabajadores = Trabajadores::where('area_id', $area)->get();
+        return response()->json($trabajadores);
     }
 }

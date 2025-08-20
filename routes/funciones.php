@@ -7,7 +7,7 @@ use App\Http\Controllers\funciones\EntregasInventariablesController;
 use App\Http\Controllers\funciones\ResguardosPendientesController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'verified'])->prefix('funciones')->name('funciones.')->group(function () { 
+Route::middleware(['auth', 'verified'])->prefix('funciones')->name('funciones.')->group(function () {
     // Inventarios
     Route::prefix('inventarios')->name('inventarios.')->group(function () {
         // Bienes Inventariables
@@ -52,6 +52,7 @@ Route::middleware(['auth', 'verified'])->prefix('funciones')->name('funciones.')
         //Resguardos Pendientes
         Route::prefix('pendientes')->name('pendientes.')->controller(ResguardosPendientesController::class)->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::post('/', 'store')->name('store');
         });
     });
 });
