@@ -53,7 +53,7 @@ const FormCreg = ({ register, errors, defaultValues, isEditing, control, areas, 
         </div>
         <div className="grid grid-cols-1 md:gap-6 mt-4 sm:grid-cols-2">
             <SelectField
-                id="articulo_id"
+                id="bienes_inventariable_id"
                 label="Nº de inventario*"
                 options={articulos}
                 value={defaultValues.noInventario}

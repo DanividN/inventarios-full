@@ -2,7 +2,7 @@ import React from "react";
 
 interface CardComponentProps {
     title: string;
-    children: React.ReactNode;
+    children: React.ReactNode | any;
     buttonModal?: string;
     openModal?: () => void;
     className?: string;

@@ -7,52 +7,40 @@ use App\Http\Controllers\funciones\EntregasInventariablesController;
 use App\Http\Controllers\funciones\ResguardosPendientesController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'verified'])->prefix('funciones')->name('funciones.')->group(function () {
-    // Inventarios
-    Route::prefix('inventarios')->name('inventarios.')->group(function () {
-        // Bienes Inventariables
-        Route::prefix('inventariables')->name('inventariables.')->controller(BienesInventariablesController::class)->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/crear', 'create')->name('create');
-            Route::post('/', 'store')->name('store');
-            Route::get('/edit/{bienes_inventariable}', 'edit')->name('edit');
-            Route::post('/{bienes_inventariable}', 'update')->name('update');
-            Route::get('/{filename}', 'verImagenes')->name('verImagenes');
-            Route::put('/baja/{bienes_inventariable}', 'baja')->name('baja');
-        });
-        // Bienes de Consumo
-        Route::prefix('consumo')->name('consumo.')->controller(BienesConsumoController::class)->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/crear', 'create')->name('create');
-            Route::post('/', 'store')->name('store');
-            Route::get('/historial/{articulo}', 'historial')->name('historial');
-        });
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('funciones/inventarios')->group(function () {
+        Route::get('inventariables', [BienesInventariablesController::class, 'index'])->name('inventariables.index');
+        Route::get('inventariables/crear', [BienesInventariablesController::class, 'create'])->name('inventariables.create');
+        Route::post('inventariables', [BienesInventariablesController::class, 'store'])->name('inventariables.store');
+        Route::get('inventariables/edit/{bienes_inventariable}', [BienesInventariablesController::class, 'edit'])->name('inventariables.edit');
+        Route::post('inventariables/{bienes_inventariable}', [BienesInventariablesController::class, 'update'])->name('inventariables.update');
+        Route::get('inventariables/{filename}', [BienesInventariablesController::class, 'verImagenes'])->name('inventariables.verImagenes');
+        Route::put('inventariables/baja/{bienes_inventariable}', [BienesInventariablesController::class, 'baja'])->name('inventariables.baja');
+
+        Route::get('consumo', [BienesConsumoController::class, 'index'])->name('consumo.index');
+        Route::get('consumo/crear', [BienesConsumoController::class, 'create'])->name('consumo.create');
+        Route::post('consumo', [BienesConsumoController::class, 'store'])->name('consumo.store');
+        Route::get('consumo/historial/{articulo}', [BienesConsumoController::class, 'historial'])->name('consumo.historial');
     });
 
-    // Entregas
-    Route::prefix('entregas')->name('entregas.')->group(function () {
-        // Entregas Inventariables
-        Route::prefix('inventariables')->name('inventariables.')->controller(EntregasInventariablesController::class)->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/crear', 'create')->name('create');
-            Route::post('/', 'store')->name('store');
-            Route::get('/historial', 'historial')->name('history');
-        });
-        // Entregas Consumo
-        Route::prefix('consumo')->name('consumo.')->controller(EntregasConsumoController::class)->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/crear', 'create')->name('create');
-            Route::post('/', 'store')->name('store');
-            Route::get('/historial', 'historial')->name('history');
-        });
+    Route::prefix('funciones/entregas')->group(function () { Route::get('inventariables', [EntregasInventariablesController::class, 'index'])->name('entregas.inventariables.index');
+        Route::get('inventariables/crear', [EntregasInventariablesController::class, 'create'])->name('entregas.inventariables.create');
+        Route::post('inventariables', [EntregasInventariablesController::class, 'store'])->name('entregas.inventariables.store');
+        Route::get('inventariables/historial', [EntregasInventariablesController::class, 'historial'])->name('entregas.inventariables.history');
+
+        Route::get('consumo', [EntregasConsumoController::class, 'index'])->name('entregas.consumo.index');
+        Route::get('consumo/crear', [EntregasConsumoController::class, 'create'])->name('entregas.consumo.create');
+        Route::post('consumo', [EntregasConsumoController::class, 'store'])->name('entregas.consumo.store');
+        Route::get('consumo/historial', [EntregasConsumoController::class, 'historial'])->name('entregas.consumo.history');
     });
 
-    // Resguardos
-    Route::prefix('resguardos')->name('resguardos.')->group(function () {
-        //Resguardos Pendientes
-        Route::prefix('pendientes')->name('pendientes.')->controller(ResguardosPendientesController::class)->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::post('/', 'store')->name('store');
-        });
+    Route::prefix('funciones/resguardos')->group(function () {
+        Route::get('pendientes', [ResguardosPendientesController::class, 'index'])->name('resguardos.pendientes.index');
+        Route::post('pendientes',  [ResguardosPendientesController::class, 'store'])->name('resguardos.pendientes.store');
+        Route::get('pendientes/show/{id}', [ResguardosPendientesController::class, 'show'])->name('resguardos.pendientes.show');
+
+        Route::get('asignados', [ResguardosAsignadosController::class, 'index'])->name('resguardos.asignados.index');
     });
+
+
 });

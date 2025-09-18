@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\configuracion\TrabajadoresController;
 use App\Http\Controllers\funciones\BienesConsumoController;
 use App\Http\Controllers\funciones\BienesInventariablesController;
+use App\Http\Controllers\funciones\ResguardosPendientesController;
 use App\Http\Controllers\MunicipiosController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,8 +23,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
    Route::get('articulosConsumible/{clasificacion}', [BienesConsumoController::class, 'getArticulosConsumible'])->name('consumo.getArticulosConsumible');
    Route::get('trabajadoresArea/{area}', [TrabajadoresController::class, 'getTrabajador'])->name('getTrabajador');
    Route::get('articulosArea/{area}', [BienesInventariablesController::class, 'getArticulosArea'])->name('getArticulosArea');
-
+    Route::post('formato-firmado/carga', [ResguardosPendientesController::class, 'formatoFirmadoCarga'])->name('formatoFirmado.carga');
 });
+
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

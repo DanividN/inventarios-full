@@ -12,7 +12,7 @@ class ResguardosPendientes extends Model
 
     protected $fillable = [
         'trabajador_id',
-        'articulo_id',
+        'bienes_inventariable_id',
         'creg',
         'movimiento',
         'formato_resguardo',
@@ -24,8 +24,9 @@ class ResguardosPendientes extends Model
         return $this->belongsTo(Trabajadores::class, 'trabajador_id');
     }
 
-    public function articulo()
+    public function bienesInventariable()
     {
-        return $this->belongsTo(Articulos::class, 'articulo_id');
+        return $this->belongsTo(BienesInventariable::class, 'bienes_inventariable_id');
     }
+
 }
