@@ -4,6 +4,7 @@ use App\Http\Controllers\funciones\BienesConsumoController;
 use App\Http\Controllers\funciones\BienesInventariablesController;
 use App\Http\Controllers\funciones\EntregasConsumoController;
 use App\Http\Controllers\funciones\EntregasInventariablesController;
+use App\Http\Controllers\funciones\ResguardosAsignadosController;
 use App\Http\Controllers\funciones\ResguardosPendientesController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('pendientes/show/{id}', [ResguardosPendientesController::class, 'show'])->name('resguardos.pendientes.show');
 
         Route::get('asignados', [ResguardosAsignadosController::class, 'index'])->name('resguardos.asignados.index');
+        Route::get('asignados/resguardatarios/{id}', [ResguardosAsignadosController::class, 'resguardatarios'])->name('resguardos.asignados.resguardatarios');
+        Route::get('asignados/show/{id}', [ResguardosAsignadosController::class, 'show'])->name('resguardos.asignados.show');
     });
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Models\configuracion;
 
+use App\Models\funciones\ResguardosPendientes;
 use Illuminate\Database\Eloquent\Model;
 
 class  Trabajadores extends Model
@@ -24,5 +25,19 @@ class  Trabajadores extends Model
     public function area()
     {
         return $this->belongsTo(Areas::class, 'area_id');
+    }
+
+    public function resguardosPendientes()
+    {
+        return $this->hasMany(ResguardosPendientes::class, 'trabajador_id');
+    }
+
+    static function resguardosAsignados($id)
+    {
+        return ResguardosPendientes::where('trabajador_id', $id)
+            ->with('trabajador.area')
+            ->with('bienesInventariable')
+            ->whereNotNull('resguardo_firma')
+            ->get();
     }
 }
