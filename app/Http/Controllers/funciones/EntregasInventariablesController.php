@@ -7,7 +7,9 @@ use App\Models\configuracion\areas;
 use App\Models\configuracion\Clasificacion;
 use App\Models\funciones\BienesInventariable;
 use App\Models\funciones\EntregasInventariables;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -64,7 +66,7 @@ class EntregasInventariablesController extends Controller
         //crear folio de entrega revisando si ya existe un registro en la tabla entregas_inventariables
         $existeRegistro = EntregasInventariables::exists();
         if ($existeRegistro) {
-            $ultimoFolio = EntregasInventariables::max('folio');
+            $ultimoFolio = EntregasInventariables::count();
             $nuevoFolio = $ultimoFolio + 1;
         } else {
             $nuevoFolio = 1;
@@ -87,6 +89,23 @@ class EntregasInventariablesController extends Controller
             ]);
         }
 
+        $bienes = BienesInventariable::whereIn('id', collect($articulos)->pluck('id'))->get();
+
+        $pdf = Pdf::loadView('pdf.entrega-inventariable', [
+            'entrega' => $entrega,
+            'bienes' => $bienes,
+        ]);
+
+            // Guardar el PDF en storage/app/public/entregas/
+        $pdfPath = 'entregas/' . $folio_armado . '.pdf';
+        Storage::disk('public')->put($pdfPath, $pdf->output());
+
+        $publicUrl = asset('storage/' . $pdfPath);
+
+        // (opcional) Guardar ruta del PDF en la base de datos
+        $entrega->documento_entrega = $publicUrl;
+        $entrega->save();
+
         return redirect()->route('entregas.inventariables.index');
     }
 
@@ -98,5 +117,25 @@ class EntregasInventariablesController extends Controller
         return Inertia::render('funciones/entregasInventariables/history', [
             'entregas' => $entregas
         ]);
+    }
+
+    public function docInventariableFirmado(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:pdf,png,jpg|max:2048',
+            'id'   => 'required|integer|exists:entregas_inventariables,id',
+        ]);
+
+
+        // Guarda el archivo en storage/app/public/entregas_firmados
+        $path = $request->file('file')->store('inventariables/entregas_firmados', 'public');
+
+        $publicUrl = asset('storage/' . $path);
+
+        EntregasInventariables::where('id', $request->input('id'))
+            ->update(['documento_firmado' => $publicUrl]);
+
+        // Devolver la ruta en flash para que React actualice el enlace
+        return redirect()->back()->with('file', $path);
     }
 }

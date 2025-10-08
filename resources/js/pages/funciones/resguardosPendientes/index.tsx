@@ -88,8 +88,9 @@ export default function ResguardosPendientes() {
 
     const defaultValues: ResguardosPendientesFormValues = {
         trabajador_id: 0,
-        articulo_id: 0,
+        area_id: 0,
         creg: '',
+        bienes_inventariables_id: '',
     };
 
     const {

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('resguardos_pendientes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('trabajador_id')->constrained('trabajadores')->cascadeOnDelete();
-            $table->foreignId('articulo_id')->constrained('articulos')->cascadeOnDelete();
             $table->string('creg');
             $table->enum('movimiento', ['sin movimiento', 'transferencia', 'reasignacion']);
             $table->text('formato_resguardo')->nullable();

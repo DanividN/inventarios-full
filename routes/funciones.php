@@ -29,6 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('inventariables/crear', [EntregasInventariablesController::class, 'create'])->name('entregas.inventariables.create');
         Route::post('inventariables', [EntregasInventariablesController::class, 'store'])->name('entregas.inventariables.store');
         Route::get('inventariables/historial', [EntregasInventariablesController::class, 'historial'])->name('entregas.inventariables.history');
+        Route::post('inventariables/DocInventariableFirmado', [EntregasInventariablesController::class, 'docInventariableFirmado'])->name('entregas.inventariables.DocInventariableFirmado');
 
         Route::get('consumo', [EntregasConsumoController::class, 'index'])->name('entregas.consumo.index');
         Route::get('consumo/crear', [EntregasConsumoController::class, 'create'])->name('entregas.consumo.create');
