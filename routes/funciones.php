@@ -6,6 +6,7 @@ use App\Http\Controllers\funciones\EntregasConsumoController;
 use App\Http\Controllers\funciones\EntregasInventariablesController;
 use App\Http\Controllers\funciones\ResguardosAsignadosController;
 use App\Http\Controllers\funciones\ResguardosPendientesController;
+use App\Http\Controllers\funciones\VerificacionesController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -43,6 +44,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('asignados', [ResguardosAsignadosController::class, 'index'])->name('resguardos.asignados.index');
         Route::get('asignados/resguardatarios/{id}', [ResguardosAsignadosController::class, 'resguardatarios'])->name('resguardos.asignados.resguardatarios');
         Route::get('asignados/show/{id}', [ResguardosAsignadosController::class, 'show'])->name('resguardos.asignados.show');
+    });
+
+    Route::prefix('funciones/')->group(function () {
+        Route::get('verificaciones', [VerificacionesController::class, 'index'])->name('verificaciones.index');
+        Route::get('verificaciones/resguardatarios/{id}', [VerificacionesController::class, 'resguardatarios'])->name('verificaciones.resguardatarios');
+        Route::get('verificaciones/show/{id}', [VerificacionesController::class, 'show'])->name('verificaciones.show');
     });
 
 

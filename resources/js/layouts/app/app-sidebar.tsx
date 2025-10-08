@@ -70,7 +70,7 @@ const functionItems: NavItem[] = [
     {
         icon: <ShieldCheck size={20} />,
         name: "Verificación de bienes",
-        path: "/funciones/verificaciones/verificacion_areas",
+        path: "/funciones/verificaciones",
     },
 ];
 

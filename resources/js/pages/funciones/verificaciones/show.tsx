@@ -1,12 +1,11 @@
-import ActionMenu from "@/components/ui/ActionMenu";
 import CardComponent from "@/components/ui/CardComponent";
 import TableComponent from "@/components/ui/TableComponent";
 import { usePage } from "@inertiajs/react";
-import { dateFormat } from "highcharts";
 import { useMemo } from "react";
 
 export default function show() {
-    const {resguardos} = usePage().props;
+     const {resguardos} = usePage().props;
+
     const columns = useMemo(() => [
         {
             accessorKey: 'fecha',
@@ -44,11 +43,15 @@ export default function show() {
             filterFn: 'equalsString',
         },
         {
-            accessorKey: 'documentoFirma',
-            label: 'Documento con Firma',
+            accessorKey: 'estatus',
+            label: 'Estatus',
             disableFilter: true,
         },
-
+        {
+            accessorKey: 'formato_incidencia',
+            label: 'Formato de Incidencia',
+            disableFilter: true,
+        }
         ], []);
     const data = resguardos.map((resguardo) => ({
         id: resguardo.id,
@@ -59,9 +62,10 @@ export default function show() {
         estadoUso: resguardo.bienes_inventariable.estado,
         Marca: resguardo.bienes_inventariable.marca,
         Modelo: resguardo.bienes_inventariable.modelo,
-        // documentoFirma: resguardo.resguardo_firma,
-
+        estatus: resguardo.estatus,
+        formato_incidencia: resguardo.formato_resguardo,
     }));
+
     return (
         <>
             <CardComponent title={`${resguardos[0].trabajador.nombre} ${resguardos[0].trabajador.apellido_paterno} ${resguardos[0].trabajador.apellido_materno}`}>
