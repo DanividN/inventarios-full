@@ -54,5 +54,10 @@ class BienesInventariable extends Model
         return $this->belongsTo(Proveedores::class, 'proveedor_id');
     }
 
+    public function resguardosPendientes()
+    {
+        return $this->hasMany(ResguardosPendientes::class, 'bienes_inventariable_id');
+    }
+
 
 }

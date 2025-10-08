@@ -16,7 +16,6 @@ export default function FormatoFirmado({ row }: { row: any }) {
         router.post('/formato-firmado/carga', formData, {
             forceFormData: true,
             onSuccess: (page) => {
-                // ⚡ aquí asumo que devuelves la ruta del archivo en la DB
                 const newFile = page.props.flash?.file ?? null;
                 setFileUrl(newFile);
                 setStatus('Completado');
@@ -34,7 +33,7 @@ export default function FormatoFirmado({ row }: { row: any }) {
     }
     return (
         <a
-            href={`/storage/${fileUrl}`}
+            href={`${fileUrl}`}
             target="_blank"
             rel="noopener noreferrer"
             className="rounded-md bg-green-200 px-2 py-1 text-green-800 hover:bg-green-300"

@@ -14,7 +14,7 @@ use Inertia\Response;
 
 class BienesInventariablesController extends Controller
 {
-    public function index():Response
+    public function index(): Response
     {
         // con areas
         $bienes = BienesInventariable::with('clasificacion', 'area', 'proveedor')->get();
@@ -28,7 +28,7 @@ class BienesInventariablesController extends Controller
         $proveedores = Proveedores::all();
         $clasificaciones = Clasificacion::all();
         $areas = areas::all();
-        return Inertia::render('funciones/bienesInventariables/create',[
+        return Inertia::render('funciones/bienesInventariables/create', [
             'proveedores' => $proveedores,
             'clasificaciones' => $clasificaciones,
             'areas' => $areas
@@ -75,7 +75,7 @@ class BienesInventariablesController extends Controller
         $proveedores = Proveedores::all();
         $clasificaciones = Clasificacion::all();
         $areas = areas::all();
-        return Inertia::render('funciones/bienesInventariables/edit',[
+        return Inertia::render('funciones/bienesInventariables/edit', [
             'bienes' => $bienes,
             'proveedores' => $proveedores,
             'clasificaciones' => $clasificaciones,
@@ -128,7 +128,7 @@ class BienesInventariablesController extends Controller
 
     public function baja(BienesInventariable $bienes_inventariable)
     {
-         // Cambia el estatus a inactivo;
+        // Cambia el estatus a inactivo;
         $bienes_inventariable->estatus = "inactivo";
         $bienes_inventariable->save();
 
@@ -144,7 +144,10 @@ class BienesInventariablesController extends Controller
 
     public function getArticulosArea($area)
     {
-        $bienes = BienesInventariable::where('area_id', $area)->where('tipo', 'asignado')->get();
+        $bienes = BienesInventariable::where('area_id', $area)
+            ->where('tipo', 'asignado')
+            ->doesntHave('resguardosPendientes')
+            ->get();
         return response()->json($bienes);
     }
 }

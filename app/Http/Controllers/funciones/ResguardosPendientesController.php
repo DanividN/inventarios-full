@@ -5,7 +5,9 @@ namespace App\Http\Controllers\funciones;
 use App\Http\Controllers\Controller;
 use App\Models\configuracion\areas;
 use App\Models\funciones\ResguardosPendientes;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ResguardosPendientesController extends Controller
@@ -22,7 +24,19 @@ class ResguardosPendientesController extends Controller
 
     public function store(Request $request)
     {
-        ResguardosPendientes::create($request->all());
+       $pendientes = ResguardosPendientes::create($request->all());
+        // crear pdf y guardarlo en storage/app/public/resguardos_pendientes
+        $pdf = Pdf::loadView('pdf.documento-resguardo', [
+            'resguardo' => $pendientes->load('trabajador', 'bienesInventariable.area', 'bienesInventariable.clasificacion', 'bienesInventariable.proveedor')
+        ]);
+        $pdfPath = 'resguardos_pendientes/' . 'Creg-' . $pendientes->creg . '.pdf';
+        Storage::disk('public')->put($pdfPath, $pdf->output());
+
+        $publicUrl = asset('storage/' . $pdfPath);
+
+        $pendientes->formato_resguardo = $publicUrl;
+        $pendientes->save();
+
         return redirect()->back();
     }
 
@@ -44,10 +58,12 @@ class ResguardosPendientesController extends Controller
         // Guarda el archivo en storage/app/public/resguardos_firmados
         $path = $request->file('file')->store('resguardos_firmados', 'public');
 
+        $publicUrl = asset('storage/' . $path);
+
         ResguardosPendientes::where('id', $request->input('id'))
-            ->update(['resguardo_firma' => $path]);
+            ->update(['resguardo_firma' => $publicUrl]);
 
         // Devolver la ruta en flash para que React actualice el enlace
-        return redirect()->back()->with('file', $path);
+        return redirect()->route('resguardos.pendientes.index')->with('file', $path);
     }
 }
