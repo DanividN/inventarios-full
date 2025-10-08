@@ -123,6 +123,8 @@ export default function Password() {
                     </form>
                 </div>
             </SettingsLayout>
-
+        </AppLayout>
     );
 }
+
+

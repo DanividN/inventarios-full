@@ -46,6 +46,16 @@ export default function show() {
         {
             accessorKey: 'documentoFirma',
             label: 'Documento con Firma',
+            cell: (info) => (
+                    <a
+                        href={info.getValue()}
+                        className="inline-flex items-center gap-2 rounded-md border border-blue-500 bg-white px-2 py-1 text-blue-500 hover:bg-blue-200 hover:text-blue-700"
+                        download={true}
+                        rel="noreferrer"
+                    >
+                        Descargar
+                    </a>
+                ),
             disableFilter: true,
         },
 
@@ -59,12 +69,12 @@ export default function show() {
         estadoUso: resguardo.bienes_inventariable.estado,
         Marca: resguardo.bienes_inventariable.marca,
         Modelo: resguardo.bienes_inventariable.modelo,
-        // documentoFirma: resguardo.resguardo_firma,
+        documentoFirma: resguardo.resguardo_firma,
 
     }));
     return (
         <>
-            <CardComponent title={`${resguardos[0].trabajador.nombre} ${resguardos[0].trabajador.apellido_paterno} ${resguardos[0].trabajador.apellido_materno}`}>
+            <CardComponent title={`${resguardos[0].trabajador.nombre} ${resguardos[0].trabajador.apellido_paterno} ${resguardos[0].trabajador.apellido_materno}`} buttonModal="Movimientos" >
                 <div className="grid grid-cols-4 grid-rows-1 gap-6">
                     <div>
                         <span>Área:</span><br />
