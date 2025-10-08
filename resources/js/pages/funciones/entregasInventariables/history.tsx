@@ -1,21 +1,13 @@
 import DocInventariableFirmado from '@/components/entregaInventariable/DocInventariableFirmado';
 import TableComponent from '@/components/ui/TableComponent';
 import { usePage } from '@inertiajs/react';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 export default function HistoryEntregasInventariables() {
     const { entregas } = usePage<{
         entregas: any[];
     }>().props;
 
-    const [uploadedFiles, setUploadedFiles] = useState({});
-
-    const handleFileUpload = (folio, file) => {
-        setUploadedFiles((prev) => ({
-            ...prev,
-            [folio]: file,
-        }));
-    };
 
     const columns = useMemo(
         () => [

@@ -7,7 +7,9 @@ use App\Models\configuracion\areas;
 use App\Models\configuracion\Clasificacion;
 use App\Models\funciones\BienesConsumo;
 use App\Models\funciones\EntregasConsumo;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -77,6 +79,23 @@ class EntregasConsumoController extends Controller
             ]);
         }
 
+        $bienes = BienesConsumo::whereIn('id', collect($articulos)->pluck('id'))->get();
+
+        $pdf = Pdf::loadView('pdf.entrega-consumo', [
+            'entrega' => $entrega,
+            'bienes' => $bienes,
+        ]);
+
+        // Guardar el PDF en storage/app/public/entregas/
+        $pdfPath = 'entregasConsumo/' . $folio_armado . '.pdf';
+        Storage::disk('public')->put($pdfPath, $pdf->output());
+
+        $publicUrl = asset('storage/' . $pdfPath);
+
+        //Guardar ruta del PDF en la base de datos
+        $entrega->documento_entrega = $publicUrl;
+        $entrega->save();
+
         return redirect()->route('entregas.consumo.index');
     }
 
@@ -85,5 +104,25 @@ class EntregasConsumoController extends Controller
         return Inertia::render('funciones/entregasConsumo/history', [
             'entregas' => $entregas
         ]);
+    }
+
+    public function docConsumoFirmado(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:pdf,png,jpg|max:2048',
+            'id'   => 'required|integer|exists:entregas_consumos,id',
+        ]);
+
+
+        // Guarda el archivo en storage/app/public/entregas_firmados
+        $path = $request->file('file')->store('entregas_firmados', 'public');
+
+        $publicUrl = asset('storage/' . $path);
+
+        EntregasConsumo::where('id', $request->input('id'))
+            ->update(['documento_firmado' => $publicUrl]);
+
+        // Devolver la ruta en flash para que React actualice el enlace
+        return redirect()->back()->with('file', $path);
     }
 }

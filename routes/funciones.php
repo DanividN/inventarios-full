@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('consumo/crear', [EntregasConsumoController::class, 'create'])->name('entregas.consumo.create');
         Route::post('consumo', [EntregasConsumoController::class, 'store'])->name('entregas.consumo.store');
         Route::get('consumo/historial', [EntregasConsumoController::class, 'historial'])->name('entregas.consumo.history');
+        Route::post('consumo/DocConsumoFirmado', [EntregasConsumoController::class, 'docConsumoFirmado'])->name('entregas.consumo.DocConsumoFirmado');
     });
 
     Route::prefix('funciones/resguardos')->group(function () {
