@@ -25,6 +25,7 @@ export default function Appearance() {
                     <AppearanceTabs />
                 </div>
             </SettingsLayout>
+        </AppLayout>
 
     );
 }
