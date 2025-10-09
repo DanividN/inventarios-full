@@ -6,10 +6,30 @@ use App\Http\Controllers\funciones\BienesConsumoController;
 use App\Http\Controllers\funciones\BienesInventariablesController;
 use App\Http\Controllers\funciones\ResguardosPendientesController;
 use App\Http\Controllers\MunicipiosController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('home');
+
+Route::get('/ejecutar-seeders-una-vez', function () {
+    if (app()->environment('production')) {
+        try {
+            Artisan::call('db:seed', ['--force' => true]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Seeders ejecutados correctamente',
+                'output' => Artisan::output()
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+    return 'No disponible en este entorno';
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
