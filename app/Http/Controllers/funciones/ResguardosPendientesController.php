@@ -14,7 +14,7 @@ class ResguardosPendientesController extends Controller
 {
     public function index()
     {
-        $pendientes = ResguardosPendientes::with('trabajador', 'bienesInventariable.area')->get();
+        $pendientes = ResguardosPendientes::with('trabajador', 'bienesInventariable.area')->whereNull('resguardo_firma')->get();
         $areas = areas::all();
         return Inertia::render('funciones/resguardosPendientes/index', [
             'pendientes' => $pendientes,

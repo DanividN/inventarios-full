@@ -146,8 +146,20 @@ class BienesInventariablesController extends Controller
     {
         $bienes = BienesInventariable::where('area_id', $area)
             ->where('tipo', 'asignado')
-            ->doesntHave('resguardosPendientes')
+            ->where(function ($query) {
+                $query->doesntHave('resguardosPendientes') // sin ningún resguardo
+                    ->orWhere(function ($q) {
+                        $q->whereHas('resguardosPendientes', function ($resguardo) {
+                            $resguardo->where('estatus', '!=', 'activo')
+                                ->where('movimiento', 'desasignado');
+                        })
+                            ->whereDoesntHave('resguardosPendientes', function ($resguardoActivo) {
+                                $resguardoActivo->where('estatus', 'activo'); // 👈 asegura que no haya ninguno activo
+                            });
+                    });
+            })
             ->get();
+
         return response()->json($bienes);
     }
 }

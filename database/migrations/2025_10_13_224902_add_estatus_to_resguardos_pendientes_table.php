@@ -6,22 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::table('resguardos_pendientes', function (Blueprint $table) {
-            // crear nueva columna con relación
-            $table->foreignId('bienes_inventariable_id')
-                ->nullable() // <-- opcional, ponlo si no quieres que truene si no hay datos
-                ->constrained('bienes_inventariables')
-                ->cascadeOnDelete();
+            $table->enum('estatus', ['activo', 'inactivo'])->default('activo')->after('movimiento');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('resguardos_pendientes', function (Blueprint $table) {
-            $table->dropForeign(['bienes_inventariable_id']);
-            $table->dropColumn('bienes_inventariable_id');
+            $table->dropColumn(['estatus']);
         });
     }
 };

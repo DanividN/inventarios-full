@@ -87,7 +87,7 @@ export default function ResguardosPendientes() {
         id: pendiente.id,
         noInventario: pendiente.bienes_inventariable.numero_inventario,
         area: pendiente.bienes_inventariable.area.name,
-        Asignado: pendiente.trabajador.nombre + ' ' + pendiente.trabajador.apellido_paterno + ' ' + pendiente.trabajador.apellido_materno,
+        Asignado: pendiente.trabajador_id ? pendiente.trabajador.nombre + ' ' + pendiente.trabajador.apellido_paterno + ' ' + pendiente.trabajador.apellido_materno : 'Sin asignar',
         nombreBien: pendiente.bienes_inventariable.nombre,
         estadoUso: pendiente.bienes_inventariable.estado.toUpperCase(),
         movimiento: pendiente.movimiento,
@@ -127,6 +127,7 @@ export default function ResguardosPendientes() {
                 value: trabajador.id,
                 label: trabajador.nombre + ' ' + trabajador.apellido_paterno + ' ' + trabajador.apellido_materno,
             }));
+
 
             const articulosOptions = dataArticulos.map((articulo: any) => ({
                 value: articulo.id,
