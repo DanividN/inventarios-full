@@ -52,7 +52,6 @@ export default function ResguardosPendientesShow() {
         };
     });
 
-    console.log(resguardo);
     return (
         <>
             <CardComponent title={`${resguardo.bienes_inventariable.numero_inventario} - ${resguardo.bienes_inventariable?.nombre}`}>

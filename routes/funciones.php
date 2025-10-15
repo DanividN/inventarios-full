@@ -53,6 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('verificaciones', [VerificacionesController::class, 'index'])->name('verificaciones.index');
         Route::get('verificaciones/resguardatarios/{id}', [VerificacionesController::class, 'resguardatarios'])->name('verificaciones.resguardatarios');
         Route::get('verificaciones/show/{id}', [VerificacionesController::class, 'show'])->name('verificaciones.show');
+        Route::post('verificaciones', [VerificacionesController::class, 'store'])->name('verificaciones.store');
     });
 
 
