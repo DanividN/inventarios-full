@@ -201,7 +201,7 @@ export default function Resguardos() {
       showFooter: true,
       footerData: {
         id: "Total",
-        resguardatarios: "320",
+        resguardatarios: "280",
         resguardos: "1,600",
         porcentaje: "100%",
       },
