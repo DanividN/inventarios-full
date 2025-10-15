@@ -23,7 +23,7 @@ const FormCreg = ({ register, errors, defaultValues, isEditing, control, areas, 
         label: area.name
     }));
 
-
+console.log()
   return (
     <>
         <div className="grid grid-cols-1 md:gap-6 mt-4 sm:grid-cols-2">

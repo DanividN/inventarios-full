@@ -1,16 +1,16 @@
-import { InventariablesFormValues } from "@/types/InventariablesFormValues";
-import { router } from "@inertiajs/react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import CardComponent from "../ui/CardComponent";
-import InventariablesForm from "./InventariablesForm";
-import CancelButton from "../ui/CancelButton";
-import SaveButton from "../ui/SaveButton";
-import EditButton from "../ui/EditButton";
-import { useMemo, useState } from "react";
-import TableHistorial from "../ui/TableHistorial";
+import { InventariablesFormValues } from '@/types/InventariablesFormValues';
+import { router } from '@inertiajs/react';
+import { useMemo, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import CancelButton from '../ui/CancelButton';
+import CardComponent from '../ui/CardComponent';
+import EditButton from '../ui/EditButton';
+import SaveButton from '../ui/SaveButton';
+import TableComponent from '../ui/TableComponent';
+import InventariablesForm from './InventariablesForm';
 
-export default function InventariablesEditForm({ data, areas, proveedores, clasificaciones }: any) {
+export default function InventariablesEditForm({ data, areas, proveedores, clasificaciones, historial_resguardos }: any) {
     const [isEditing, setIsEditing] = useState(false);
 
     const defaultValues = {
@@ -37,8 +37,8 @@ export default function InventariablesEditForm({ data, areas, proveedores, clasi
         tipo_poliza: data.bien.tipo_poliza,
         numero_poliza: data.bien.numero_poliza,
         descripcion: data.bien.descripcion,
-        imagenes: data.bien.imagenes
-    }
+        imagenes: data.bien.imagenes,
+    };
 
     const {
         register,
@@ -47,82 +47,71 @@ export default function InventariablesEditForm({ data, areas, proveedores, clasi
         setError,
         setValue,
         control,
-        watch
-    } = useForm<InventariablesFormValues>({ defaultValues: defaultValues});
+        watch,
+    } = useForm<InventariablesFormValues>({ defaultValues: defaultValues });
 
     const onSubmit: SubmitHandler<InventariablesFormValues> = (data) => {
         router.post(`/funciones/inventarios/inventariables/${data.id}`, data, {
             onSuccess: () => {
-                toast.success("Bienes Inventariables creado correctamente.");
+                toast.success('Bienes Inventariables creado correctamente.');
             },
             onError: (serverErrors) => {
                 Object.entries(serverErrors).forEach(([key, message]) => {
                     setError(key as keyof InventariablesFormValues, {
                         type: 'server',
-                        message: message as string
-                    })
-                })
-            }
-        })
+                        message: message as string,
+                    });
+                });
+            },
+        });
     };
 
     const toggleEditMode = () => {
         setIsEditing(!isEditing);
-    }
+    };
 
-    // const columns = useMemo(() => [
-    //      {
-    //         accessorKey: "fechaResguardo",
-    //         label: "Fecha de resguardo",
-    //         cell: (info: any) => info.getValue(),
-    //         disableFilter: true,
-    //     },
-    //     {
-    //         accessorKey: "fechaBaja",
-    //         label: "Fecha de baja",
-    //         cell: (info: any) => info.getValue(),
-    //         disableFilter: true
-    //     },
-    //     {
-    //         accessorKey: "nombreResguardatario",
-    //         label: "Nombre del resguardatario",
-    //         cell: (info: any) => info.getValue(),
-    //         disableFilter: true
-    //     },
-    //     {
-    //         accessorKey: "descripcion",
-    //         label: "Descripción",
-    //         cell: (info: any) => info.getValue(),
-    //         disableFilter: true
-    //     },
-    //     {
-    //         accessorKey: "estado",
-    //         label: "Estado de uso",
-    //         cell: (info: any) => info.getValue(),
-    //         disableFilter: true
-    //     },
-    //     {
-    //         accessorKey: "acciones",
-    //         label: "Acciones",
-    //         cell: (info: any) => (
-    //             <button className="text-blue-500 bg-transparent border border-blue-500 p-2 rounded-md hover:bg-blue-500 hover:text-white">
-    //                 descargar
-    //             </button>
-    //         ),
-    //         disableFilter: true,
-    //     },
-    // ])
+    const columns = useMemo(() => [
+        {
+            accessorKey: 'fechaResguardo',
+            label: 'Fecha de resguardo',
+            cell: (info: any) => info.getValue(),
+            disableFilter: true,
+        },
+        {
+            accessorKey: 'fechaBaja',
+            label: 'Fecha de baja',
+            cell: (info: any) => info.getValue(),
+            disableFilter: true,
+        },
+        {
+            accessorKey: 'nombreResguardatario',
+            label: 'Nombre del resguardatario',
+            cell: (info: any) => info.getValue(),
+            disableFilter: true,
+        },
+        {
+            accessorKey: 'descripcion',
+            label: 'Descripción',
+            cell: (info: any) => info.getValue(),
+            disableFilter: true,
+        },
+        {
+            accessorKey: 'estado',
+            label: 'Estado de uso',
+            cell: (info: any) => info.getValue(),
+            disableFilter: true,
+        },
+    ]);
 
-
-    // const datos = [
-    //     {
-    //         fechaResguardo: data.bien.fecha_resguardo,
-    //         fechaBaja: data.bien.fecha_baja,
-    //         nombreResguardatario: data.bien.resguardatario,
-    //         descripcion: data.bien.descripcion,
-    //         estado: data.bien.estado
-    //     }
-    // ]
+    const datos = historial_resguardos.map((historial_resguardo) => {
+        return {
+            fechaResguardo: new Date(historial_resguardo.created_at).toLocaleDateString(),
+            fechaBaja: new Date(historial_resguardo.updated_at).toLocaleDateString(),
+            nombreResguardatario: historial_resguardo.trabajador.nombre + ' ' + historial_resguardo.trabajador.apellido_paterno + ' ' + historial_resguardo.trabajador.apellido_materno,
+            descripcion: historial_resguardo.descripcion,
+            estado: historial_resguardo.estatus,
+        };
+    });
 
     return (
         <>
@@ -140,24 +129,13 @@ export default function InventariablesEditForm({ data, areas, proveedores, clasi
                         control={control}
                         watch={watch}
                     />
-                    <div className='flex justify-center md:justify-end mt-6'>
-                        <CancelButton link='/funciones/inventarios/inventariables' />
-                        {
-                            isEditing ? (
-                                <SaveButton />
-                            ) : (
-                                <EditButton onClick={toggleEditMode} />
-                            )
-                        }
+                    <div className="mt-6 flex justify-center md:justify-end">
+                        <CancelButton link="/funciones/inventarios/inventariables" />
+                        {isEditing ? <SaveButton /> : <EditButton onClick={toggleEditMode} />}
                     </div>
                 </form>
             </CardComponent>
-            {/* <TableHistorial
-                titleTable="Movimientos"
-                columns={columns}
-                datos={datos}
-            /> */}
+            <TableComponent title="Movimientos" columns={columns} data={datos} />
         </>
-
-    )
+    );
 }

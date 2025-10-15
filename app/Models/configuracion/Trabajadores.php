@@ -3,6 +3,7 @@
 namespace App\Models\configuracion;
 
 use App\Models\funciones\ResguardosPendientes;
+use App\Models\configuracion\areas;
 use Illuminate\Database\Eloquent\Model;
 
 class  Trabajadores extends Model
@@ -24,7 +25,7 @@ class  Trabajadores extends Model
 
     public function area()
     {
-        return $this->belongsTo(Areas::class, 'area_id');
+        return $this->belongsTo(areas::class, 'area_id');
     }
 
     public function resguardosPendientes()
@@ -38,6 +39,7 @@ class  Trabajadores extends Model
             ->with('trabajador.area')
             ->with('bienesInventariable')
             ->whereNotNull('resguardo_firma')
+            ->where('estatus', '!=', 'inactivo')
             ->get();
     }
 }

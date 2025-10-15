@@ -13,8 +13,8 @@ export default function resguardatarios() {
     const { verificaciones, resguardatarios, verificador } = usePage().props;
 
     const defaultValues: VerificacionFormValue = {
-        area_id: '',
-        verificador_id: '',
+        area_id: resguardatarios[0].area_id,
+        verificador_id: '2',
         fecha_agendada: '',
         hora_agendada: '',
         direccion: '',
@@ -41,7 +41,7 @@ export default function resguardatarios() {
                 filterFn: 'equalsString',
             },
             {
-                accessorKey: 'NumResguardo',
+                accessorKey: 'NumResguardos',
                 label: 'Número de Resguardos',
                 disableFilter: true,
             },
@@ -68,12 +68,15 @@ export default function resguardatarios() {
         ],
         [],
     );
-
+    console.log(verificaciones)
     const data = verificaciones.map((verificacion) => ({
         id: verificacion.id,
-        numEmpleado: verificacion.numero_empleado,
-        nombre: verificacion.nombre + ' ' + verificacion.apellido_paterno + ' ' + verificacion.apellido_materno,
-        NumResguardo: verificacion.total_resguardos,
+        numEmpleado: verificacion.resguardatarios.numero_empleado,
+        nombre: verificacion.resguardatarios.nombre + ' ' + verificacion.resguardatarios.apellido_paterno + ' ' + verificacion.resguardatarios.apellido_materno,
+        NumResguardos: verificacion.resguardatarios.resguardos_activos,
+        NumVerificaciones: verificacion.resguardatarios.resguardos_pendientes.filter((resguardo) => resguardo.estatus === 'verificado').length,
+        fechaAgendada: new Date(verificacion.fecha_agendada).toLocaleDateString(),
+        avance: verificacion.resguardatarios.resguardos_pendientes.filter((resguardo) => resguardo.estatus === 'verificado').length / verificacion.resguardatarios.resguardos_pendientes.length,
     }));
 
     const [verificacion, setVerificacion] = useState(false);
@@ -81,7 +84,7 @@ export default function resguardatarios() {
     const closeModal = () => setVerificacion(false);
 
     const SubmitVerificacion: SubmitHandler<VerificacionFormValue> = (data) => {
-        router.post('/funciones/verificaciones/store', data, {
+        router.post('/funciones/verificaciones', data, {
             onSuccess: () => {
                 closeModal();
                 toast.success('Verificación agendada con éxito');

@@ -7,6 +7,7 @@ use App\Models\configuracion\areas;
 use App\Models\configuracion\Clasificacion;
 use App\Models\configuracion\Proveedores;
 use App\Models\funciones\BienesInventariable;
+use App\Models\funciones\ResguardosPendientes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -75,11 +76,13 @@ class BienesInventariablesController extends Controller
         $proveedores = Proveedores::all();
         $clasificaciones = Clasificacion::all();
         $areas = areas::all();
+        $historial_resguardos = ResguardosPendientes::where('bienes_inventariable_id', $bienes_inventariable)->with('trabajador')->orderBy('created_at', 'desc')->get();
         return Inertia::render('funciones/bienesInventariables/edit', [
             'bienes' => $bienes,
             'proveedores' => $proveedores,
             'clasificaciones' => $clasificaciones,
-            'areas' => $areas
+            'areas' => $areas,
+            'historial_resguardos' => $historial_resguardos
         ]);
     }
 
@@ -146,8 +149,20 @@ class BienesInventariablesController extends Controller
     {
         $bienes = BienesInventariable::where('area_id', $area)
             ->where('tipo', 'asignado')
-            ->doesntHave('resguardosPendientes')
+            ->where(function ($query) {
+                $query->doesntHave('resguardosPendientes') // sin ningún resguardo
+                    ->orWhere(function ($q) {
+                        $q->whereHas('resguardosPendientes', function ($resguardo) {
+                            $resguardo->where('estatus', '!=', 'activo')
+                                ->where('movimiento', 'desasignado');
+                        })
+                            ->whereDoesntHave('resguardosPendientes', function ($resguardoActivo) {
+                                $resguardoActivo->where('estatus', 'activo'); // 👈 asegura que no haya ninguno activo
+                            });
+                    });
+            })
             ->get();
+
         return response()->json($bienes);
     }
 }

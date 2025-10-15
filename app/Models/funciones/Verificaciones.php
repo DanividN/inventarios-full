@@ -24,6 +24,11 @@ class Verificaciones extends Model
         return $this->belongsTo(areas::class);
     }
 
+    public function resguardatarios()
+    {
+        return $this->belongsTo(Trabajadores::class, 'resguardatarios_id');
+    }
+
     public function verificador()
     {
         return $this->belongsTo(Trabajadores::class);

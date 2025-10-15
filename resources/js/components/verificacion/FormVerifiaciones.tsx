@@ -5,7 +5,7 @@ import { Control, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import InputField from '../ui/InputField';
 import SelectField from '../ui/SelectField';
 import TableComponent from '../ui/TableComponent';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 type FormVerifiacionesProps = {
     control: Control<VerificacionFormValue>;
@@ -23,8 +23,6 @@ export default function FormVerificaciones({
     register,
     errors,
     defaultValues,
-    isEditing = false,
-    clasificaciones,
     verificador,
     resguardatarios,
     setValue,
@@ -35,15 +33,47 @@ export default function FormVerificaciones({
         label: ver.nombre + ' ' + ver.apellido_paterno + ' ' + ver.apellido_materno,
     }));
 
+    const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+     const data = resguardatarios.map((resguardatario) => ({
+        id: resguardatario.id,
+        nombre: resguardatario.nombre + ' ' + resguardatario.apellido_paterno + ' ' + resguardatario.apellido_materno,
+        numero_empleado: resguardatario.numero_empleado,
+        total_resguardos: resguardatario.total_resguardos,
+    }));
+
+
     const columns = useMemo(
         () => [
             {
                 accessorKey: 'select',
-                label: '',
-                disableFilter: true,
-                cell: ({ row }: any) => (
-                    <input type="checkbox" checked={selectedIds.includes(row.original.id)} onChange={() => handleSelect(row.original.id)} />
+                header: () => (
+                    <input
+                        type="checkbox"
+                        checked={selectedIds.length === data.length}
+                        onChange={(e) => {
+                            if (e.target.checked) {
+                                setSelectedIds(data.map((d) => d.id));
+                            } else {
+                                setSelectedIds([]);
+                            }
+                        }}
+                    />
                 ),
+                cell: ({row}) => (
+                    <input
+                        type="checkbox"
+                        checked={selectedIds.includes(row.original.id)}
+                        onChange={(e) => {
+                            if (e.target.checked) {
+                                setSelectedIds((prev) => [...prev, row.original.id]);
+                            } else {
+                                setSelectedIds((prev) => prev.filter((id) => id !== row.original.id));
+                            }
+                        }}
+                    />
+                ),
+                disableFilter: true,
             },
             {
                 accessorKey: 'nombre',
@@ -61,21 +91,13 @@ export default function FormVerificaciones({
                 filterFn: 'equalsString',
             },
         ],
-        [],
+        [data, selectedIds],
     );
 
-    const [selectedIds, setSelectedIds] = useState<number[]>([]);
+    useEffect(() => {
+        setValue('resguardatarios_id', selectedIds);
+    }, [selectedIds, setValue]);
 
-    const handleSelect = (id: number) => {
-        setSelectedIds((prev) => (prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]));
-    };
-
-    const data = resguardatarios.map((resguardatario) => ({
-        id: resguardatario.id,
-        nombre: resguardatario.nombre + ' ' + resguardatario.apellido_paterno + ' ' + resguardatario.apellido_materno,
-        numero_empleado: resguardatario.numero_empleado,
-        total_resguardos: resguardatario.total_resguardos,
-    }));
 
     return (
         <>

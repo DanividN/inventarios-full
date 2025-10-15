@@ -50,12 +50,15 @@ class areas extends Model
             // Cantidad de trabajadores que tienen al menos un resguardo firmado
             'trabajadores as trabajadores_con_resguardo' => function ($q) {
                 $q->whereHas('resguardosPendientes', function ($resguardo) {
-                    $resguardo->whereNotNull('resguardo_firma');
+                    $resguardo->whereNotNull('resguardo_firma')
+                        ->where('estatus', '!=', 'inactivo'); // 👈 excluye los inactivos
+
                 });
             },
-
             // Total de resguardos firmados en el área
-            'resguardosFirmados as total_resguardos_firmados_area',
+            'resguardosFirmados as total_resguardos_firmados_area' => function ($q) {
+                $q->where('estatus', '!=', 'inactivo'); // 👈 excluye también aquí
+            },
         ]);
     }
 
@@ -73,6 +76,7 @@ class areas extends Model
             ->withCount([
                 'resguardosPendientes as total_resguardos' => function ($q) {
                     $q->whereNotNull('resguardo_firma');
+                    $q->where('estatus', '!=', 'inactivo');
                 }
             ])
             ->get();

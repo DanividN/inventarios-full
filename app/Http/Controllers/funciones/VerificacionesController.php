@@ -26,14 +26,39 @@ class VerificacionesController extends Controller
     public function resguardatarios($id)
     {
 
-        $verificaciones = Verificaciones::where('area_id', $id)->get();
+        $verificaciones = Verificaciones::with([
+            'resguardatarios' => function ($q) {
+                $q->with(['resguardosPendientes'])
+                    ->withCount(['resguardosPendientes as resguardos_activos' => function ($query) {
+                        $query->where('estatus', 'activo'); // o el campo que marque si está activo
+                    }]);
+            }
+        ])
+            ->where('area_id', $id)
+            ->get();
         $verificador = Trabajadores::where('cargo', 'verificador')->get();
         $resguardatarios = areas::detalleConResguardatarios($id);
         return Inertia::render('funciones/verificaciones/resguardatarios', [
             'resguardatarios' => $resguardatarios,
             'verificador' => $verificador,
             'verificaciones' => $verificaciones
-       ]);
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        foreach ($request->resguardatarios_id as $resguardo) {
+            $verificacion = new Verificaciones();
+            $verificacion->area_id = $request->area_id;
+            $verificacion->verificador_id = $request->verificador_id;
+            $verificacion->fecha_agendada = $request->fecha_agendada;
+            $verificacion->hora_agendada = $request->hora_agendada;
+            $verificacion->direccion = $request->direccion;
+            $verificacion->periodo = $request->periodo;
+            $verificacion->resguardatarios_id = $resguardo;
+            $verificacion->save();
+        }
+        return redirect()->route('verificaciones.resguardatarios', $request->area_id);
     }
 
     public function show($id)

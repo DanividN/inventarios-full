@@ -14,7 +14,7 @@ class ResguardosPendientesController extends Controller
 {
     public function index()
     {
-        $pendientes = ResguardosPendientes::with('trabajador', 'bienesInventariable.area')->get();
+        $pendientes = ResguardosPendientes::with('trabajador', 'bienesInventariable.area')->whereNull('resguardo_firma')->get();
         $areas = areas::all();
         return Inertia::render('funciones/resguardosPendientes/index', [
             'pendientes' => $pendientes,
@@ -43,8 +43,11 @@ class ResguardosPendientesController extends Controller
     public function show($id)
     {
         $resguardo = ResguardosPendientes::with('trabajador', 'bienesInventariable.area', 'bienesInventariable.clasificacion', 'bienesInventariable.proveedor')->find($id);
+        $bien_id = $resguardo->bienesInventariable->id;
+        $historial_resguardos = ResguardosPendientes::where('bienes_inventariable_id', $bien_id)->with('trabajador')->orderBy('created_at', 'desc')->get();
         return Inertia::render('funciones/resguardosPendientes/show', [
-            'resguardo' => $resguardo
+            'resguardo' => $resguardo,
+            'historial_resguardos' => $historial_resguardos
         ]);
     }
 

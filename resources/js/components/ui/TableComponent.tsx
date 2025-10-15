@@ -148,9 +148,9 @@ function TableComponent<T extends object>({
             </div>
 
             {/* Tabla */}
-            <div className="overflow">
+            <div className="overflow-x-auto">
                 <table
-                    className="w-full table-auto fill mx-auto text-center"
+                    className="w-full fill mx-auto text-center"
                     style={{ tableLayout: "fixed" }}
                 >
                     <thead className="bg-gray-100">
@@ -241,7 +241,7 @@ function TableComponent<T extends object>({
                             table.getRowModel().rows.map((row) => (
                                 <tr key={row.id} className="h-14 w-full align-middle  first:border-t-white odd:bg-white even:bg-[#edfbf6]">
                                     {row.getVisibleCells().map((cell) => (
-                                        <td key={cell.id} className="p-2 text-gray-500 align-middle">
+                                        <td key={cell.id} className="p-2 text-gray-500 align-middle whitespace-nowrap">
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}

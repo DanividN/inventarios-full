@@ -46,12 +46,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('asignados', [ResguardosAsignadosController::class, 'index'])->name('resguardos.asignados.index');
         Route::get('asignados/resguardatarios/{id}', [ResguardosAsignadosController::class, 'resguardatarios'])->name('resguardos.asignados.resguardatarios');
         Route::get('asignados/show/{id}', [ResguardosAsignadosController::class, 'show'])->name('resguardos.asignados.show');
+        Route::post('asignados/movimientos', [ResguardosAsignadosController::class, 'movimientos'])->name('resguardos.asignados.movimientos');
     });
 
     Route::prefix('funciones/')->group(function () {
         Route::get('verificaciones', [VerificacionesController::class, 'index'])->name('verificaciones.index');
         Route::get('verificaciones/resguardatarios/{id}', [VerificacionesController::class, 'resguardatarios'])->name('verificaciones.resguardatarios');
         Route::get('verificaciones/show/{id}', [VerificacionesController::class, 'show'])->name('verificaciones.show');
+        Route::post('verificaciones', [VerificacionesController::class, 'store'])->name('verificaciones.store');
     });
 
 
